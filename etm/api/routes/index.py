@@ -38,7 +38,6 @@ def not_here():
     return send_from_directory(PUBLIC_PATH, '404.html')
 
 
-# get file from directory see => http://localhost:4000/old/data_samples/383682002FEC20160930.txt
 @app.route('/<path:path>')
 def static_proxy(path):
     """ static folder serve """

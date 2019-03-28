@@ -14,7 +14,7 @@ class XlExtractor():
     def __init__(self, file_name):
         self.file_name = file_name
         root_path = os.path.join(os.environ.get(
-            'ROOT_PATH'), 'public/old/data_samples/')
+            'ROOT_PATH'), 'public/data_samples/')
         self.file_path = os.path.join(
             root_path + file_name)
         self.xl_file = pd.ExcelFile(self.file_path)
