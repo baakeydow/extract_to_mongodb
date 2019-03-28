@@ -37,17 +37,29 @@ class XlExtractor():
         for row in df.itertuples():
             LOG.info(getattr(row, label))
 
+    def save_sheet_to_db(self, sheet):
+        LOG.info('parsing sheet: {0}'.format(sheet))
+        df_with_unnamed = pd.read_excel(
+            self.file_path, sheet_name=sheet, encoding='utf-8')
+        df_with_nan_values = df_with_unnamed.loc[:, ~df_with_unnamed.columns.str.contains('^Unnamed')]  # noqa
+        df = df_with_nan_values.dropna(axis=1, how='all')
+        LOG.info('column header found: {0}'.format(df.columns.values))
+        records = json.loads(df.T.to_json())
+        LOG.info('saving from sheet -> {0}'.format(sheet))
+        try:
+            mongo.db.data.insert(records.values())
+        except Exception:
+            LOG.critical('-> data to save {0}'.format(
+                json.dumps(records, indent=4, sort_keys=True)))
+            exit()
+
     def parse_file(self):
         with app.app_context():
             sheets_array = self.metaData[self.file_name]
             LOG.info('sheets_array => {0}'.format(sheets_array))
             for sheet in sheets_array:
                 if sheet.isdigit():
-                    df_with_unnamed = pd.read_excel(
-                        self.file_path, sheet_name=sheet)
-                    df = df_with_unnamed.loc[:, ~df_with_unnamed.columns.str.contains('^Unnamed')]  # noqa
-                    records = json.loads(df.T.to_json()).values()
-                    mongo.db.data.insert(records)
+                    self.save_sheet_to_db(sheet)
 
 
 xl_object = XlExtractor("fake_data.xlsx")
