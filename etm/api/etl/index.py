@@ -47,7 +47,10 @@ class XlExtractor():
         records = json.loads(df.T.to_json())
         LOG.info('saving from sheet -> {0}'.format(sheet))
         try:
-            mongo.db.data.insert(records.values())
+            if 'DOMAIN' in df.columns:
+                mongo.db[df['DOMAIN'].values[0]].insert(records.values())
+            else:
+                mongo.db.data.insert(records.values())
         except Exception:
             LOG.critical('-> data to save {0}'.format(
                 json.dumps(records, indent=4, sort_keys=True)))
@@ -62,6 +65,10 @@ class XlExtractor():
                     self.save_sheet_to_db(sheet)
 
 
-xl_object = XlExtractor("fake_data.xlsx")
-xl_object.parse_file()
-exit()
+try:
+    xl_object = XlExtractor("fake_data.xlsx")
+    xl_object.parse_file()
+except (OSError, IOError) as e:
+    LOG.critical(e)
+
+exit()  # easier for development so it acts like a script
