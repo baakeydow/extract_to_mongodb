@@ -1,4 +1,4 @@
-''' all REST endpoints '''
+''' all etl classes for API resources '''
 import os
 import glob
 __all__ = [os.path.basename(f)[:-3]

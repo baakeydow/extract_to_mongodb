@@ -1,4 +1,4 @@
-''' all file '''
+''' all etl classes for file system resources '''
 import os
 import glob
 __all__ = [os.path.basename(f)[:-3]

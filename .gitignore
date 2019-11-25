@@ -10,7 +10,7 @@ data_sources
 .vscode
 
 # Environments
-.env
+/.env
 .venv
 env/
 venv/

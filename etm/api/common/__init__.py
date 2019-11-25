@@ -1,4 +1,4 @@
-''' all REST endpoints '''
+''' all controllers for various collections of database '''
 import os
 import glob
 __all__ = [os.path.basename(f)[:-3]
