@@ -1,7 +1,7 @@
 numpy==1.16.3
 pandas==0.24.2
 jsonschema==3.0.1
-requests==2.22
+requests==2.31.0
 Flask==1.0.2
 pymongo==3.8.0
 Flask_Bcrypt==0.7.1
